@@ -5,14 +5,19 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 import pickle
 
-#load model, tokenizer and label_mapper
-model = load_model("bi_lstm.h5")
+@st.cache_resource  
+def load_artifacts():
+    #load model, tokenizer and label_mapper
+    model = load_model("bi_lstm.h5")
 
-with open("tokenizer.pkl","rb") as file:
-    tokenizer = pickle.load(file)
+    with open("tokenizer.pkl","rb") as file:
+        tokenizer = pickle.load(file)
 
-with open("label_mapper.pkl","rb") as file:
-    label_mapper = pickle.load(file)
+    with open("label_mapper.pkl","rb") as file:
+        label_mapper = pickle.load(file)
+    return model, tokenizer, label_mapper
+
+model, tokenizer, label_mapper = load_artifacts()
 
 max_sequence_len = 70
 
